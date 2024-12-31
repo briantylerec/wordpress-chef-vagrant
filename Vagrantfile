@@ -12,7 +12,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    #curl -L https://www.opscode.com/chef/install.sh | sudo bash
   curl -L https://chef.io/chef/install.sh | sudo bash
   SHELL
 
