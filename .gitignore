@@ -23,6 +23,7 @@ Policyfile.lock.json
 
 # Ignore node folder
 nodes/*
+wordpress/
 
 # Exception default.json
 !nodes/default.json
