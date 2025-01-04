@@ -1,20 +1,48 @@
 driver:
   name: vagrant
+  boot_timeout: 600
 
 provisioner:
   name: chef_zero
+  cookbooks_path: ["cookbooks"]
+  nodes_path: "nodes"
 
 platforms:
-  - name: ubuntu-22.04
+  - name: ubuntu-18.04
 
 verifier:
   name: inspec
 
 suites:
-  - name: default
+  - name: apache
     run_list:
       - recipe[apache]
+    verifier:
+      inspec_tests:
+        - cookbooks/apache/spec
+    attributes: {}
+
+  - name: mysql
+    run_list:
       - recipe[mysql]
+    verifier:
+      inspec_tests:
+        - cookbooks/mysql/spec
+    attributes: {}
+
+  - name: php
+    run_list:
       - recipe[php]
+    verifier:
+      inspec_tests:
+        - cookbooks/php/spec
+    attributes: {}
+
+  - name: wordpress
+    run_list:
       - recipe[wordpress]
-    attributes:
+    verifier:
+      inspec_tests:
+        - cookbooks/wordpress/spec
+    attributes: {}
+  
