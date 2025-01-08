@@ -1,5 +1,5 @@
 # Install WP-CLI
-bash "install_wp_cli" do
+  bash "install_wp_cli" do
     code <<-EOH
       curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
       chmod +x wp-cli.phar
@@ -41,6 +41,14 @@ bash "install_wp_cli" do
     not_if "wp core is-installed --path=/var/www/html/blog --allow-root"
   end
   
+  #install theme
+  bash 'install_and_activate_theme' do
+    code <<-EOH
+      wp theme install twentytwentyone --path=/var/www/html/blog --allow-root
+    EOH
+    action :run
+  end
+
   # Setup first blog
   bash "configure_blog" do
     code <<-EOH
