@@ -32,7 +32,7 @@ elsif os[:family] == 'debian'
     it { should be_enabled }
     it { should be_running }
   end
-  
+
   #validacion archivo de configuracion
   describe file('/etc/apache2/apache2.conf') do
     it { should exist }

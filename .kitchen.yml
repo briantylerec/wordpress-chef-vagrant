@@ -5,15 +5,17 @@ driver:
 provisioner:
   name: chef_zero
 
+verifier:
+  name: inspec  
 platforms:
   - name: centos-6
   - name: ubuntu-20.04
 
 suites:
-  - name: default
+  - name: apache
     run_list:
-      - recipe[apache]
+      - recipe[apache::default]
     verifier:
-      name: inspec
-
+      inspec_tests:
+        - test/integration/apache
     attributes:
