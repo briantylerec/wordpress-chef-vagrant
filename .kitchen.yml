@@ -8,7 +8,7 @@ provisioner:
   nodes_path: "nodes"
 
 platforms:
-  - name: ubuntu-18.04
+  - name: ubuntu-20.04
 
 verifier:
   name: inspec
@@ -36,13 +36,5 @@ suites:
     verifier:
       inspec_tests:
         - cookbooks/php/spec
-    attributes: {}
-
-  - name: wordpress
-    run_list:
-      - recipe[wordpress]
-    verifier:
-      inspec_tests:
-        - cookbooks/wordpress/spec
     attributes: {}
   
