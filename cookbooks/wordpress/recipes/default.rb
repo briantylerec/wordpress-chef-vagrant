@@ -1,5 +1,5 @@
 # Install WP-CLI
-bash "install_wp_cli" do
+  bash "install_wp_cli" do
     code <<-EOH
       curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
       chmod +x wp-cli.phar
