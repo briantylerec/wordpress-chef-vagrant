@@ -1,6 +1,6 @@
+---
 driver:
   name: vagrant
-  boot_timeout: 600
 
 provisioner:
   name: chef_zero
@@ -9,6 +9,7 @@ provisioner:
 
 platforms:
   - name: ubuntu-20.04
+  - name: centos-6
 
 verifier:
   name: inspec
@@ -16,10 +17,10 @@ verifier:
 suites:
   - name: apache
     run_list:
-      - recipe[apache]
+      - recipe[apache::default]
     verifier:
       inspec_tests:
-        - cookbooks/apache/spec
+        - test/integration/apache
     attributes: {}
 
   - name: mysql
@@ -37,4 +38,3 @@ suites:
       inspec_tests:
         - cookbooks/php/spec
     attributes: {}
-  

@@ -35,9 +35,9 @@ end
 # Download and setup WordPress
 bash "download_wordpress" do
   code <<-EOH
-    curl -O https://wordpress.org/latest.tar.gz || { echo "Failed to download WordPress"; exit 1; }
-    tar -xzvf latest.tar.gz -C /var/www/html || { echo "Failed to extract WordPress"; exit 1; }
-    mv /var/www/html/wordpress /var/www/html/blog || { echo "Failed to move WordPress"; exit 1; }
+    wget https://wordpress.org/latest.tar.gz
+    tar -xzvf latest.tar.gz -C /var/www/html
+    mv /var/www/html/wordpress /var/www/html/blog
     chown -R www-data:www-data /var/www/html/blog
     chmod -R 755 /var/www/html/blog
   EOH
@@ -65,12 +65,20 @@ bash "install_wordpress" do
   not_if "wp core is-installed --path=/var/www/html/blog --allow-root"
 end
 
+#install theme
+bash 'install_and_activate_theme' do
+  code <<-EOH
+    wp theme install twentytwentyone --path=/var/www/html/blog --allow-root
+  EOH
+  action :run
+end
+
 # Setup first blog
 bash "configure_blog" do
   code <<-EOH
     wp post create --post_title="Hello World" --post_content="This is an automated blog post." \
       --post_status="publish" --path=/var/www/html/blog --allow-root
-    wp theme activate twentytwentyfive --path=/var/www/html/blog --allow-root
+    wp theme activate twentytwentyone --path=/var/www/html/blog --allow-root
   EOH
   not_if "wp post list --path=/var/www/html/blog --allow-root | grep 'Hello World'"
 end
@@ -82,3 +90,4 @@ bash "set_permissions" do
     chmod -R 755 /var/www/html/blog
   EOH
 end
+  

@@ -1,15 +1,34 @@
-execute 'update_package_list' do
-  command 'apt-get update'
-  action :run
-  only_if { platform_family?('debian') } # Solo se ejecuta en sistemas Debian/Ubuntu
+# Actualiza la lista de paquetes solo si es necesario
+if platform_family?('debian')
+  execute 'update_package_list' do
+    command 'apt-get update'
+    action :run
+  end
+elsif platform_family?('rhel')
+  execute 'update_package_list' do
+    command 'yum makecache'
+    action :run
+  end
 end
 
-package "mysql-server" do
-  action :install
-end
+# Instala MySQL y el servidor
+if platform_family?('debian')
+  package "mysql-server" do
+    action :install
+  end
 
-service "mysql" do
-  action [:enable, :start]
+  service "mysql" do
+    action [:enable, :start]
+  end
+
+elsif platform_family?('rhel')
+  package "mysql-server" do
+    action :install
+  end
+
+  service "mysqld" do
+    action [:enable, :start]
+  end
 end
 
 bash "create_wordpress_db" do
