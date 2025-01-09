@@ -4,12 +4,15 @@ driver:
 
 provisioner:
   name: chef_zero
+  cookbooks_path: ["cookbooks"]
+  nodes_path: "nodes"
+
+platforms:
+  - name: ubuntu-20.04
+  - name: centos-6
 
 verifier:
-  name: inspec  
-platforms:
-  - name: centos-6
-  - name: ubuntu-20.04
+  name: inspec
 
 suites:
   - name: apache
@@ -18,4 +21,20 @@ suites:
     verifier:
       inspec_tests:
         - test/integration/apache
-    attributes:
+    attributes: {}
+
+  - name: mysql
+    run_list:
+      - recipe[mysql]
+    verifier:
+      inspec_tests:
+        - cookbooks/mysql/spec
+    attributes: {}
+
+  - name: php
+    run_list:
+      - recipe[php]
+    verifier:
+      inspec_tests:
+        - cookbooks/php/spec
+    attributes: {}
